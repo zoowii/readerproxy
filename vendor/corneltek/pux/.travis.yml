@@ -1,0 +1,23 @@
+language: php
+php:
+  - 5.4
+  - 5.5
+    #  - hhvm
+install:
+  - sudo apt-get install php5-dev php-pear
+  - composer install --dev
+  - pear channel-discover pear.corneltek.com
+  - pear install -a -f corneltek/PHPUnit_TestMore
+  - pear install -a -f corneltek/PHPUnit_Framework_ExtensionTestCase
+  - pear install -a -f corneltek/ExtUnit
+before_script:
+  - php-config || true
+  - phpenv rehash
+  - phpenv version-name
+  - ./tests/travis-setup.sh
+script:
+  - ./tests/travis-test.sh
+cache:
+  apc: true
+  directories:
+  - vendor

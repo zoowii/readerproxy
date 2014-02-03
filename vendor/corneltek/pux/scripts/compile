@@ -1,0 +1,12 @@
+#!/bin/bash
+onion compile \
+    --lib src \
+    --lib vendor/corneltek/cliframework/src \
+    --lib vendor/corneltek/getoptionkit/src \
+    --lib vendor/corneltek/universal/src \
+    --classloader \
+    --bootstrap scripts/pux-emb.php \
+    --executable \
+    --output pux.phar
+mv pux.phar pux
+chmod +x pux
