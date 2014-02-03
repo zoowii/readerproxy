@@ -1,21 +1,26 @@
 <?php
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 use Pux\Mux;
+use \RP\controllers\ProductController;
+use \RP\controllers\DemoController;
+
 $mux = new Mux();
+$mux->expand = true;
 $demoMux = new Mux();
-$demoMux->add('/get', ['HelloController','helloAction']);
+$demoMux->add('/get', ['\RP\controllers\DemoController', 'helloAction']);
 $mux->mount('/demo', $demoMux);
-$mux->get('/product', ['ProductController','listAction']);
-$mux->get('/product/:id', ['ProductController','itemAction'] , [
-    'require' => [ 'id' => '\d+', ],
-    'default' => [ 'id' => '1', ]
+$mux->get('/product', ['\RP\controllers\ProductController', 'listAction']);
+$mux->get('/product/:id', ['\RP\controllers\ProductController', 'itemAction'], [
+    'require' => ['id' => '\d+',],
+    'default' => ['id' => '1',]
 ]);
-$mux->post('/product/:id', ['ProductController','updateAction'] , [
-    'require' => [ 'id' => '\d+', ],
-    'default' => [ 'id' => '1', ]
+$mux->post('/product/:id', ['\RP\controllers\ProductController', 'updateAction'], [
+    'require' => ['id' => '\d+',],
+    'default' => ['id' => '1',]
 ]);
-$mux->delete('/product/:id', ['ProductController','deleteAction'] , [
-    'require' => [ 'id' => '\d+', ],
-    'default' => [ 'id' => '1', ]
+$mux->delete('/product/:id', ['\RP\controllers\ProductController', 'deleteAction'], [
+    'require' => ['id' => '\d+',],
+    'default' => ['id' => '1',]
 ]);
+$mux->get('/', ['\RP\controllers\SiteController', 'indexAction']);
 return $mux;

@@ -1,15 +1,21 @@
 {
     "name": "vendor_name/package_name",
-    "description": "description_text",
+    "description": "reader proxy",
     "minimum-stability": "stable",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
-            "name": "author's name",
-            "email": "email@example.com"
+            "name": "zoowii",
+            "email": "1992zhouwei@gmail.com"
         }
     ],
     "require": {
-        "corneltek/pux": "~1.3"
+        "corneltek/pux": "~1.3",
+        "twig/twig": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "RP": ["RP/src"]
+        }
     }
 }
