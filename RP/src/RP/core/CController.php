@@ -22,6 +22,15 @@ class CController
      * @var \RP\core\Template
      */
     public $template;
+    protected $_db = null;
+
+    public function db()
+    {
+        if ($this->_db === null) {
+            $this->_db = new Db(array());
+        }
+        return $this->_db;
+    }
 
     public function __construct()
     {
