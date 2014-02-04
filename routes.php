@@ -25,7 +25,8 @@ $mux->delete('/product/:id', ['\RP\controllers\ProductController', 'deleteAction
 $mux->get('/sites/qishu/search/:name', [
     '\RP\controllers\QishuController', 'searchAction'
 ], [
-    'require' => ['name' => '\w+']
+    'require' => ['name' => '[\w\W]+']
 ]);
 $mux->get('/', ['\RP\controllers\SiteController', 'indexAction']);
+//$mux->get('', ['\RP\controllers\SiteController', 'indexAction']);
 return $mux;

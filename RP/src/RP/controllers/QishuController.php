@@ -22,6 +22,9 @@ class QishuController extends \RP\core\CController
 
     public function searchAction($name)
     {
-        $result = $this->crawler->search($name);
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $result = $this->crawler->search($name, $page);
+        $this->bind('result', $result);
+        return $this->render('search/list.php');
     }
 } 

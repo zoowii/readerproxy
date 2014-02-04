@@ -7,5 +7,5 @@ $_ENV['_CONFIG'] = $config;
 use Pux\Executor;
 
 $mux = require 'routes.php';
-$route = $mux->dispatch($_SERVER['PATH_INFO']);
+$route = $mux->dispatch(isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/');
 echo Executor::execute($route);
