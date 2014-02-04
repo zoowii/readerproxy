@@ -18,6 +18,9 @@
                             <?= $item['description'] ?>
                         </td>
                         <td>
+                            <a href="/index.php/sites/qishu/download?source=<?= urlencode($item['url']) ?>">下载</a>
+                        </td>
+                        <td>
                             <a href="<?= $item['url'] ?>">原站地址</a>
                         </td>
                     </tr>

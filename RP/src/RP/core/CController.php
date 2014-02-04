@@ -23,6 +23,7 @@ class CController
      */
     public $template;
     protected $_db = null;
+    protected $_payload = null;
 
     public function db()
     {
@@ -57,6 +58,30 @@ class CController
     public function bind($name, $value)
     {
         return $this->template->bind($name, $value);
+    }
+
+    public function args()
+    {
+        return $_GET;
+    }
+
+    public function POST()
+    {
+        return $_POST;
+    }
+
+    public function forms()
+    {
+        // TODO
+        return $_POST;
+    }
+
+    public function payload()
+    {
+        if ($this->_payload === null) {
+            $this->_payload = file_get_contents('php://input');
+        }
+        return $this->_payload;
     }
 
 }

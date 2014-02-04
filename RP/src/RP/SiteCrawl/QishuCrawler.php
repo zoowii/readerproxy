@@ -48,4 +48,23 @@ class QishuCrawler
         $result['paginator']['total'] = intval($totalCountText);
         return $result;
     }
+
+    /**
+     * 获取奇书网的某本书的下载链接
+     * @param $sourceUrl
+     * @return string
+     */
+    public function getDownloadUrl($sourceUrl)
+    {
+        $res = \RP\util\HttpClient::fetch_page('qishu', $sourceUrl);
+        $dom = HtmlDomParser::str_get_html($res);
+        $downloadAddressEl = $dom->find('div#downAddress', 0);
+        $downloadUrl = null;
+        foreach ($downloadAddressEl->find('a') as $a) {
+            if (count($a->find('strong')) > 0) {
+                $downloadUrl = $a->href;
+            }
+        }
+        return $downloadUrl;
+    }
 }

@@ -27,4 +27,28 @@ class QishuController extends \RP\core\CController
         $this->bind('result', $result);
         return $this->render('search/list.php');
     }
+
+    public function download()
+    {
+        $info = [
+            'source' => $_GET['source']
+        ];
+        $url = $this->getDownloadUrl($info);
+        if($url) {
+            header("Location: $url");
+            exit;
+        } else {
+            return <<<END
+Can't find the download url.
+END;
+
+        }
+    }
+
+    public function getDownloadUrl($info)
+    {
+        $source = $info['source'];
+        $result = $this->crawler->getDownloadUrl($source);
+        return $result;
+    }
 } 

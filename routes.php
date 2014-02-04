@@ -27,6 +27,8 @@ $mux->get('/sites/qishu/search/:name', [
 ], [
     'require' => ['name' => '[\w\W]+']
 ]);
+$mux->get('/sites/qishu/download', [
+    '\RP\controllers\QishuController', 'download'
+]);
 $mux->get('/', ['\RP\controllers\SiteController', 'indexAction']);
-//$mux->get('', ['\RP\controllers\SiteController', 'indexAction']);
 return $mux;
