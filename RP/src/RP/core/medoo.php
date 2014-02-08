@@ -352,9 +352,9 @@ class medoo
             $where = $columns;
             $columns = $join;
         }
-
+//        var_dump($where);
         $where_clause = $this->where_clause($where);
-
+//        var_dump($where_clause);
         $query =
             $this->query('SELECT ' .
                 (
@@ -365,7 +365,7 @@ class medoo
             );
 
         return $query ? $query->fetchAll(
-            (is_string($columns) && $columns != '*') ? PDO::FETCH_COLUMN : PDO::FETCH_ASSOC
+            (is_string($columns) && $columns != '*') ? \PDO::FETCH_COLUMN : \PDO::FETCH_ASSOC
         ) : false;
     }
 

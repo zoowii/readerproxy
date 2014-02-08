@@ -9,6 +9,8 @@
 namespace RP\controllers;
 
 
+use Composer\Cache;
+
 class SiteController extends \RP\core\CController
 {
     public function __construct()
@@ -26,6 +28,11 @@ class SiteController extends \RP\core\CController
 //            'name' => "test$id"
 //        ));
 //        var_dump($this->db()->count('test'));
+        $cache = \RP\core\CCache::instance();
+        $cache->create_table_if_not_exist();
+        $cache->set('test', 'test');
+//        var_dump($cache->get('test'));
+//        $cache->remove('test');
         return $this->render('site/index.php');
     }
 } 
