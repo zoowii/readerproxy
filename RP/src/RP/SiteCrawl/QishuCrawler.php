@@ -21,7 +21,7 @@ class QishuCrawler
         $res = \RP\util\HttpClient::fetch_page('qishu', $url);
         $dom = HtmlDomParser::str_get_html($res);
         $elements = $dom->find('div.result');
-        $result = ['data' => [], 'paginator' => []];
+        $result = array('data' => array(), 'paginator' => array());
         foreach ($elements as $ele) {
             $title = $ele->find('h3.c-title', 0)->find('a', 0)->innertext;
             $title = str_replace(' - txt全集下载,电子书 - 奇书网', '', $title);
@@ -30,11 +30,11 @@ class QishuCrawler
             // TODO: 把$title中的《标题》全集中的标题抽取出来
             $description = $ele->find('div.c-content', 0)->find('div.c-abstract', 0)->innertext;
             $url = $ele->find('h3.c-title', 0)->find('a', 0)->href;
-            $result['data'][] = [
+            $result['data'][] = array(
                 'title' => $title,
                 'description' => $description,
                 'url' => $url
-            ];
+            );
         }
         $curPage = $dom->find('span.pager-current', 0)->innertext;
         $totalCountText = $dom->find('span.support-text', 1)->innertext;

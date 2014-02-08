@@ -8,6 +8,8 @@
 
 namespace RP\core;
 
+$config = $_ENV['_CONFIG'];
+
 
 class Db extends medoo
 {

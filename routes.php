@@ -10,10 +10,10 @@ $demoMux = new Mux();
 $demoMux->add('/get', array('\RP\controllers\DemoController', 'helloAction'));
 $mux->mount('/demo', $demoMux);
 $mux->get('/product', array('\RP\controllers\ProductController', 'listAction'));
-$mux->get('/product/:id', array('\RP\controllers\ProductController', 'itemAction'), [
+$mux->get('/product/:id', array('\RP\controllers\ProductController', 'itemAction'), array(
     'require' => array('id' => '\d+',),
     'default' => array('id' => '1',)
-]);
+));
 $mux->post('/product/:id', array('\RP\controllers\ProductController', 'updateAction'), array(
     'require' => array('id' => '\d+',),
     'default' => array('id' => '1',)

@@ -30,9 +30,9 @@ class QishuController extends \RP\core\CController
 
     public function download()
     {
-        $info = [
+        $info = array(
             'source' => $_GET['source']
-        ];
+        );
         $url = $this->getDownloadUrl($info);
         if($url) {
             header("Location: $url");
