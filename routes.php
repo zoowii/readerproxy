@@ -7,28 +7,28 @@ use \RP\controllers\DemoController;
 $mux = new Mux();
 $mux->expand = true;
 $demoMux = new Mux();
-$demoMux->add('/get', ['\RP\controllers\DemoController', 'helloAction']);
+$demoMux->add('/get', array('\RP\controllers\DemoController', 'helloAction'));
 $mux->mount('/demo', $demoMux);
-$mux->get('/product', ['\RP\controllers\ProductController', 'listAction']);
-$mux->get('/product/:id', ['\RP\controllers\ProductController', 'itemAction'], [
-    'require' => ['id' => '\d+',],
-    'default' => ['id' => '1',]
+$mux->get('/product', array('\RP\controllers\ProductController', 'listAction'));
+$mux->get('/product/:id', array('\RP\controllers\ProductController', 'itemAction'), [
+    'require' => array('id' => '\d+',),
+    'default' => array('id' => '1',)
 ]);
-$mux->post('/product/:id', ['\RP\controllers\ProductController', 'updateAction'], [
-    'require' => ['id' => '\d+',],
-    'default' => ['id' => '1',]
-]);
-$mux->delete('/product/:id', ['\RP\controllers\ProductController', 'deleteAction'], [
-    'require' => ['id' => '\d+',],
-    'default' => ['id' => '1',]
-]);
-$mux->get('/sites/qishu/search/:name', [
+$mux->post('/product/:id', array('\RP\controllers\ProductController', 'updateAction'), array(
+    'require' => array('id' => '\d+',),
+    'default' => array('id' => '1',)
+));
+$mux->delete('/product/:id', array('\RP\controllers\ProductController', 'deleteAction'), array(
+    'require' => array('id' => '\d+',),
+    'default' => array('id' => '1',)
+));
+$mux->get('/sites/qishu/search/:name', array(
     '\RP\controllers\QishuController', 'searchAction'
-], [
-    'require' => ['name' => '[\w\W]+']
-]);
-$mux->get('/sites/qishu/download', [
+), array(
+    'require' => array('name' => '[\w\W]+')
+));
+$mux->get('/sites/qishu/download', array(
     '\RP\controllers\QishuController', 'download'
-]);
-$mux->get('/', ['\RP\controllers\SiteController', 'indexAction']);
+));
+$mux->get('/', array('\RP\controllers\SiteController', 'indexAction'));
 return $mux;
