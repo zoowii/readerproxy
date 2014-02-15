@@ -70,6 +70,9 @@ class XiamiCrawler
         }
         $dom = HtmlDomParser::str_get_html($res);
         $trackEl = $dom->find('track', 0);
+        if ($trackEl === null) {
+            return null;
+        }
         $songId = $trackEl->find('song_id', 0)->innertext;
         $albumId = $trackEl->find('album_id', 0)->innertext;
         $artistId = $trackEl->find('artist_id', 0)->innertext;
@@ -109,15 +112,16 @@ class XiamiCrawler
                 if (!$nameEle) {
                     continue;
                 }
-                $name = $nameEle->innertext;
-                $songIdText = $nameEle->href;
-                preg_match('/\\d+/', $songIdText, $matches);
-                $songId = $matches[0];
+                $name = $nameEle->title;
+                $songId = $trackEle->find('input[name=recommendids]', 0)->value;
                 $artistEl = $trackEle->find('.song_artist a', 0);
                 $artist = $artistEl->title;
                 $albumEl = $trackEle->find('.song_album a', 0);
                 $album = $albumEl->innertext;
                 $trackMetaInfo = $this->getTrackInfo($songId);
+                if ($trackMetaInfo === null) {
+                    continue;
+                }
                 // TODO: get track id and download url
                 $tracks[] = array(
                     'name' => $name,

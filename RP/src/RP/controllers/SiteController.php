@@ -21,7 +21,7 @@ class SiteController extends \RP\core\CController
 
     public function indexAction()
     {
-        $this->bind('title', 'Home');
+        $this->bind('title', '我的工具');
 //        $id = rand(1, 99999999);
 //        $this->db()->insert('test', array(
 //            'id' => $id,
