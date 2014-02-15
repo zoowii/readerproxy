@@ -30,7 +30,7 @@ class SiteController extends \RP\core\CController
 //        var_dump($this->db()->count('test'));
         $cache = \RP\core\CCache::instance();
         $cache->create_table_if_not_exist();
-        $cache->set('test', 'test');
+        $cache->set('test', 'test', -1);
 //        var_dump($cache->get('test'));
 //        $cache->remove('test');
         return $this->render('site/index.php');

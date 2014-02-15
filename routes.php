@@ -27,8 +27,23 @@ $mux->get('/sites/qishu/search/:name', array(
 ), array(
     'require' => array('name' => '[\w\W]+')
 ));
+$mux->get('/sites/xiami/search/:name', array(
+    '\RP\controllers\XiamiController', 'searchAction'
+), array(
+    'require' => array('name' => '[\w\W]+')
+));
 $mux->get('/sites/qishu/download', array(
     '\RP\controllers\QishuController', 'download'
+));
+$mux->get('/sites/xiami/lyric/:id', array(
+    '\RP\controllers\XiamiController', 'downloadLyricAction'
+), array(
+    'require' => array('id' => '\d+')
+));
+$mux->get('/sites/xiami/info/:id', array(
+    '\RP\controllers\XiamiController', 'trackMetaInfoAction'
+), array(
+    'require' => array('id' => '\d+')
 ));
 $mux->get('/', array('\RP\controllers\SiteController', 'indexAction'));
 return $mux;

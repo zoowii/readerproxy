@@ -25,7 +25,7 @@ class QishuController extends \RP\core\CController
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $result = $this->crawler->search($name, $page);
         $this->bind('result', $result);
-        return $this->render('search/list.php');
+        return $this->render('search/novel_list.php');
     }
 
     public function download()

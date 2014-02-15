@@ -37,7 +37,7 @@ class CCache
      * @param $value
      * @param int $expires 超时秒数，<= 0 时，表示永久缓存
      */
-    public function set($name, $value, $expires = -1)
+    public function set($name, $value, $expires)
     {
         self::instance()->set($name, $value, $expires);
     }

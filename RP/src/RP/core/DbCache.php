@@ -50,7 +50,7 @@ class DbCache extends CCache
         $db->exec("delete from s_cache where name='$name'");
     }
 
-    public function set($name, $value, $expires = -1)
+    public function set($name, $value, $expires)
     {
         $this->create_table_if_not_exist();
         if ($expires > 0) {

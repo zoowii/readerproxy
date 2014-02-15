@@ -10,6 +10,8 @@
 namespace RP\SiteCrawl;
 
 use Sunra\PhpSimple\HtmlDomParser;
+use RP\core\CCache;
+use RP\util\HttpClient;
 
 class QishuCrawler
 {
@@ -18,11 +20,11 @@ class QishuCrawler
         // p=1 表示页数
         $p = $page - 1;
         $url = "http://s.qisuu.com/cse/search?q=" . urlencode(trim($name)) . "&p=$p&s=2672242722776283010";
-        $cache = \RP\core\CCache::instance();
+        $cache = CCache::instance();
         $cache_key = "crawler_$url";
         $res = $cache->get($cache_key);
         if ($res === null) {
-            $res = \RP\util\HttpClient::fetch_page('qishu', $url);
+            $res = HttpClient::fetch_page('qishu', $url);
             $cache->set($cache_key, $res, 3600);
         }
         $dom = HtmlDomParser::str_get_html($res);
