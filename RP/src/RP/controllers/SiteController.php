@@ -9,9 +9,14 @@
 namespace RP\controllers;
 
 
-use Composer\Cache;
+use RP\core\CCache;
+use RP\core\CController;
+use RP\models\Role;
+use RP\models\User;
+use RP\util\Common;
+use RP\util\UserCommon;
 
-class SiteController extends \RP\core\CController
+class SiteController extends CController
 {
     public function __construct()
     {
@@ -21,18 +26,54 @@ class SiteController extends \RP\core\CController
 
     public function indexAction()
     {
-        $this->bind('title', '我的工具');
-//        $id = rand(1, 99999999);
-//        $this->db()->insert('test', array(
-//            'id' => $id,
-//            'name' => "test$id"
-//        ));
-//        var_dump($this->db()->count('test'));
-        $cache = \RP\core\CCache::instance();
-        $cache->create_table_if_not_exist();
-        $cache->set('test', 'test', -1);
-//        var_dump($cache->get('test'));
-//        $cache->remove('test');
+        $currentUser = $this->currentUser();
+        if (!$currentUser) {
+            return $this->redirect('/index.php/login');
+        }
+        $this->bind('title', '我的小工具们');
+        $this->bind('currentUser', $currentUser);
         return $this->render('site/index.php');
     }
+
+    public function loginPageAction()
+    {
+        $this->bind('title', '登录');
+        return $this->render('site/login.php');
+    }
+
+    /**
+     * 如果用户表为空，即初始化一个root用户，用于部署安装
+     */
+    private function createRootUserIfEmpty()
+    {
+        $usersCount = $this->db()->count(User::getFullTableName());
+        if ($usersCount < 1) {
+            $user = new User();
+            $user->username = 'root';
+            $user->email = 'root@localhost';
+            $user->salt = Common::randomString(10);
+            $user->password = UserCommon::encryptPassword('root', $user->salt);
+            $rootRole = Role::getRootRole();
+            $user->role_id = $rootRole->id;
+            $user->alias_name = 'super administrator';
+            $user->save();
+        }
+    }
+
+    public function loginAction()
+    {
+        $username = trim($this->POST('username'));
+        $password = trim($this->POST('password'));
+        $this->createRootUserIfEmpty();
+        $user = User::findByUsernameAndPassword($username, $password);
+        var_dump($user);
+//        exit;
+        if ($user !== null && $user->isActive()) {
+            $this->login($user);
+            return $this->redirect('/');
+        } else {
+            return $this->redirect('/index.php/login'); // TODO: use flash message
+        }
+    }
+
 } 

@@ -46,4 +46,6 @@ $mux->get('/sites/xiami/info/:id', array(
     'require' => array('id' => '\d+')
 ));
 $mux->get('/', array('\RP\controllers\SiteController', 'indexAction'));
+$mux->get('/login', array('RP\controllers\SiteController', 'loginPageAction'));
+$mux->post('/login', array('RP\controllers\SiteController', 'loginAction'));
 return $mux;

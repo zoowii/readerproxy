@@ -1,3 +1,4 @@
+<h1>当前登录用户：<?= $currentUser->getAliasName() ?></h1>
 <h2>奇书网（小说搜索）</h2>
 
 <div class="search-item">

@@ -15,6 +15,8 @@ namespace RP\core;
 //    return $url;
 //}
 
+use RP\models\User;
+use RP\zorm\Model;
 
 class CController
 {
@@ -24,11 +26,20 @@ class CController
     public $template;
     protected $_db = null;
     protected $_payload = null;
+    protected $_session_started = false;
+
+    protected function initSession()
+    {
+        if ($this->_session_started === false) {
+            session_start();
+            $this->_session_started = true;
+        }
+    }
 
     public function db()
     {
         if ($this->_db === null) {
-            $this->_db = new Db(array());
+            $this->_db = Db::instance();
         }
         return $this->_db;
     }
@@ -43,6 +54,8 @@ class CController
             $url = $config['BASE_URL'] . '/static/' . $filename;
             return $url;
         });
+        Model::$tbl_prefix = 'rp_';
+        Model::setDb($this->db()->pdo);
     }
 
     public function setLayout($layout)
@@ -55,19 +68,34 @@ class CController
         return $this->template->render($tpl, $layout);
     }
 
+    /**
+     * TODO: route to callable with url_for
+     * @param $url
+     * @return string
+     */
+    public function redirect($url)
+    {
+        header('Location: ' . $url);
+        return '';
+    }
+
     public function bind($name, $value)
     {
         return $this->template->bind($name, $value);
     }
 
-    public function args()
+    public function args($name = null)
     {
-        return $_GET;
+        return $name ? $_GET[$name] : $_GET;
     }
 
-    public function POST()
+    public function POST($name = null)
     {
-        return $_POST;
+        if (!$name) {
+            return $_POST;
+        } else {
+            return $_POST[$name];
+        }
     }
 
     public function forms()
@@ -82,6 +110,66 @@ class CController
             $this->_payload = file_get_contents('php://input');
         }
         return $this->_payload;
+    }
+
+    /**
+     * TODO: 使用KVDB替代PHP的默认session
+     * @param null $name
+     * @return mixed
+     */
+    public function getSession($name = null)
+    {
+        $this->initSession();
+        return $name ? $_SESSION[$name] : $_SESSION;
+    }
+
+    public function setSession($name, $value)
+    {
+        $this->initSession();
+        $_SESSION[$name] = $value;
+    }
+
+    /**
+     * TODO: 增加类似Google那样的同时登录多个用户的功能
+     * @param $user
+     */
+    public function login($user)
+    {
+        if ($user) {
+            $this->setSession('user_id', $user->id);
+            $this->setSession('username', $user->username);
+            $this->setSession('role_id', $user->role_id);
+            // TODO: set login user's role name
+        }
+    }
+
+    public function logout()
+    {
+        $this->setSession('user_id', null);
+        $this->setSession('username', null);
+        $this->setSession('role_id', null);
+        // TODO
+    }
+
+    public function currentUser()
+    {
+        $user_id = $this->getSession('user_id');
+        if (!$user_id) {
+            return null;
+        } else {
+            $user = User::findByPk($user_id);
+            return $user;
+        }
+    }
+
+    public function setFlash($name, $value)
+    {
+        // TODO: flash message支持
+    }
+
+    public function getFlash($name = null)
+    {
+        // TODO: flash message支持
     }
 
 }
