@@ -162,6 +162,11 @@ class CController
         }
     }
 
+    public function isGuest()
+    {
+        return $this->currentUser() === null;
+    }
+
     public function setFlash($name, $value)
     {
         // TODO: flash message支持

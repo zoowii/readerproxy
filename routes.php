@@ -48,4 +48,6 @@ $mux->get('/sites/xiami/info/:id', array(
 $mux->get('/', array('\RP\controllers\SiteController', 'indexAction'));
 $mux->get('/login', array('RP\controllers\SiteController', 'loginPageAction'));
 $mux->post('/login', array('RP\controllers\SiteController', 'loginAction'));
+$mux->get('/logout', array('RP\controllers\SiteController', 'logoutAction'));
+$mux->get('/profile', array('RP\controllers\SiteController', 'profileAction'));
 return $mux;

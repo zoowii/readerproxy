@@ -52,6 +52,19 @@ class User extends CModel
     }
 
     /**
+     * @return Role
+     */
+    public function getRole()
+    {
+        $role = Role::findByPk($this->role_id);
+        if ($role === null) {
+            $role = Role::getCommonUser();
+            $this->role_id = $role->id;
+        }
+        return $role;
+    }
+
+    /**
      * @param $username
      * @param $password
      * @return \RP\zorm\Model

@@ -55,7 +55,7 @@ class SiteController extends CController
             $user->password = UserCommon::encryptPassword('root', $user->salt);
             $rootRole = Role::getRootRole();
             $user->role_id = $rootRole->id;
-            $user->alias_name = 'super administrator';
+            $user->alias_name = 'root';
             $user->save();
         }
     }
@@ -74,6 +74,22 @@ class SiteController extends CController
         } else {
             return $this->redirect('/index.php/login'); // TODO: use flash message
         }
+    }
+
+    public function logoutAction()
+    {
+        $this->logout();
+        return $this->redirect('/');
+    }
+
+    public function profileAction()
+    {
+        if ($this->isGuest()) {
+            return $this->redirect('/');
+        }
+        $currentUser = $this->currentUser();
+        $this->bind('user', $currentUser);
+        return $this->render('site/profile.php');
     }
 
 } 
