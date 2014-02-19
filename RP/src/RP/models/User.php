@@ -64,6 +64,14 @@ class User extends CModel
         return $role;
     }
 
+    public function getAccountBindings()
+    {
+        $bindings = AccountBinding::findAllByAttributes(array(
+            'user_id' => $this->id
+        ));
+        return $bindings;
+    }
+
     /**
      * @param $username
      * @param $password
@@ -71,13 +79,18 @@ class User extends CModel
      */
     public static function findByUsernameAndPassword($username, $password)
     {
-        $user = self::findOneByAttributes(array(
-            'username' => $username
-        ));
+        $user = self::findByUsername($username);
         if ($user->password === UserCommon::encryptPassword($password, $user->salt)) {
             return $user;
         } else {
             return null;
         }
+    }
+
+    public static function findByUsername($username)
+    {
+        return self::findOneByAttributes(array(
+            'username' => $username
+        ));
     }
 }

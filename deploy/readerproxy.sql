@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2014-02-18 17:19:16
+-- Generation Time: 2014-02-19 16:15:58
 -- 服务器版本： 5.5.35-0ubuntu0.13.10.2
 -- PHP Version: 5.5.3-1ubuntu2.1
 
@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `rp_role` (
   `version` int(11) NOT NULL DEFAULT '1',
   `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `name` varchar(50) NOT NULL,
+  `description` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

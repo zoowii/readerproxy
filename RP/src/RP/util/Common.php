@@ -31,4 +31,20 @@ class Common
     {
         return md5($source);
     }
+
+    /**
+     * 获取主机名，或者域名，或者IP
+     */
+    public static function getHostName()
+    {
+        return $_SERVER['HTTP_HOST'];
+    }
+
+    /**
+     * 获取形如：http://localhost:8080 或者http://host 这一类的，和用户请求的一样
+     */
+    public static function getHost()
+    {
+        return 'http://' . self::getHostName(); // TODO
+    }
 } 

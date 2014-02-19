@@ -88,7 +88,9 @@ class SiteController extends CController
             return $this->redirect('/');
         }
         $currentUser = $this->currentUser();
+        $bindings = $currentUser->getAccountBindings();
         $this->bind('user', $currentUser);
+        $this->bind('bindings', $bindings);
         return $this->render('site/profile.php');
     }
 

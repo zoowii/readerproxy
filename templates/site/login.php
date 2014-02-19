@@ -5,7 +5,10 @@
     <input type="password" name="password" class="form-control" placeholder="密码" required>
     <label class="checkbox">
         <input type="checkbox" value="remember-me"> 记住我
-        <a href="">用QQ帐号登录</a>
+        <a href="/index.php/auth/qq/login">
+            <img src="<?= $static_url('qq/Connect_logo_1.png') ?>" alt="QQ帐号登录"/>
+            登录
+        </a>
     </label>
     <input class="btn btn-lg btn-primary btn-block" type="submit" value="登录" />
 </form>

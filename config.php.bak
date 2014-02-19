@@ -24,5 +24,9 @@ return array(
     'BASE_URL' => '',
     'db' => array(
         'default' => $db_config
+    ),
+    'qq' => array(
+        'app_id' => 换成真实的QQ互联的app_id,
+        'app_key' => '换成真实的QQ互联的app_key'
     )
 );

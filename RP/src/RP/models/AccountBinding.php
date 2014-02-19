@@ -25,4 +25,12 @@ class AccountBinding extends CModel
         'source' => 'string', // qq, baidu, weibo
         'binding_id' => 'string', // 绑定到的第三方ID,
     );
+
+    /**
+     * @return \RP\models\User
+     */
+    public function getRelatedUser()
+    {
+        return User::findByPk($this->user_id);
+    }
 }

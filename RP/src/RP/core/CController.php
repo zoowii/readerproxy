@@ -36,7 +36,7 @@ class CController
         }
     }
 
-    public function db()
+    protected function db()
     {
         if ($this->_db === null) {
             $this->_db = Db::instance();
@@ -58,12 +58,12 @@ class CController
         Model::setDb($this->db()->pdo);
     }
 
-    public function setLayout($layout)
+    protected function setLayout($layout)
     {
         return $this->template->setLayout($layout);
     }
 
-    public function render($tpl, $layout = false)
+    protected function render($tpl, $layout = false)
     {
         return $this->template->render($tpl, $layout);
     }
@@ -73,23 +73,23 @@ class CController
      * @param $url
      * @return string
      */
-    public function redirect($url)
+    protected function redirect($url)
     {
         header('Location: ' . $url);
         return '';
     }
 
-    public function bind($name, $value)
+    protected function bind($name, $value)
     {
         return $this->template->bind($name, $value);
     }
 
-    public function args($name = null)
+    protected function args($name = null)
     {
         return $name ? $_GET[$name] : $_GET;
     }
 
-    public function POST($name = null)
+    protected function POST($name = null)
     {
         if (!$name) {
             return $_POST;
@@ -98,13 +98,13 @@ class CController
         }
     }
 
-    public function forms()
+    protected function forms()
     {
         // TODO
         return $_POST;
     }
 
-    public function payload()
+    protected function payload()
     {
         if ($this->_payload === null) {
             $this->_payload = file_get_contents('php://input');
@@ -117,13 +117,13 @@ class CController
      * @param null $name
      * @return mixed
      */
-    public function getSession($name = null)
+    protected function getSession($name = null)
     {
         $this->initSession();
         return $name ? $_SESSION[$name] : $_SESSION;
     }
 
-    public function setSession($name, $value)
+    protected function setSession($name, $value)
     {
         $this->initSession();
         $_SESSION[$name] = $value;
@@ -133,7 +133,7 @@ class CController
      * TODO: 增加类似Google那样的同时登录多个用户的功能
      * @param $user
      */
-    public function login($user)
+    protected function login($user)
     {
         if ($user) {
             $this->setSession('user_id', $user->id);
@@ -143,7 +143,7 @@ class CController
         }
     }
 
-    public function logout()
+    protected function logout()
     {
         $this->setSession('user_id', null);
         $this->setSession('username', null);
@@ -151,7 +151,10 @@ class CController
         // TODO
     }
 
-    public function currentUser()
+    /**
+     * @return \RP\models\User
+     */
+    protected function currentUser()
     {
         $user_id = $this->getSession('user_id');
         if (!$user_id) {
@@ -162,7 +165,7 @@ class CController
         }
     }
 
-    public function isGuest()
+    protected function isGuest()
     {
         return $this->currentUser() === null;
     }
@@ -172,9 +175,30 @@ class CController
         // TODO: flash message支持
     }
 
-    public function getFlash($name = null)
+    protected function getFlash($name = null)
     {
         // TODO: flash message支持
+    }
+
+    protected function ajax($data)
+    {
+        return json_encode($data);
+    }
+
+    protected function ajaxSuccess($data)
+    {
+        return $this->ajax(array(
+            'success' => true,
+            'data' => $data
+        ));
+    }
+
+    protected function ajaxFail($data)
+    {
+        return $this->ajax(array(
+            'success' => false,
+            'data' => $data
+        ));
     }
 
 }
