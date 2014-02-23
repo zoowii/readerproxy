@@ -9,7 +9,7 @@ Author: zoowii
 
 
 * 目前只支持奇书网和虾米网的搜索和下载，在线阅读等功能还在TODO
-* 演示地址：[http://readerproxy.sinaapp.com/](http://readerproxy.sinaapp.com/)
+* 演示地址：[http://tools.zoowii.com](http://tools.zoowii.com)
 * 使用了PHP 5.3+，composer做包管理，使用了Pux做路由，使用了medoo做PDO的封装。使用MySQL数据库，并且可以直接部署到SAE平台（需要先导入deploy目录下的sql文件）
 * 已经支持QQ登录，但目前采用邀请制，只有邀请的拥有才可以使用本站点，并且部署时需要拷贝config.php.bak到config.php，并且修改其中的qq的key-secret，数据库信息等
 
