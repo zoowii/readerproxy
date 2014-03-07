@@ -58,6 +58,11 @@ class CController
         Model::setDb($this->db()->pdo);
     }
 
+    protected function clearLayouts()
+    {
+        $this->template->clearLayouts();
+    }
+
     protected function setLayout($layout)
     {
         $this->template->setLayout($layout);

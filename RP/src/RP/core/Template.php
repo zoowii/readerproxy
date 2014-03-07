@@ -4,7 +4,6 @@ namespace RP\core;
 
 class Template
 {
-    public $layout = null;
     /**
      *  render from the last to the first, the result of the after one will fill to the $content of the previous one
      * @var array
@@ -28,13 +27,20 @@ class Template
         $this->templateDir = $dir;
     }
 
+    public function clearLayouts() {
+        $this->layouts = array();
+    }
+
     /**
      * set the root layout
      * @param $layout
      */
     public function setLayout($layout)
     {
-        $this->layout = $layout;
+        if (empty($layout)) {
+            $this->layouts = array();
+            return;
+        }
         $this->layouts[0] = is_string($layout) ? array('content' => $layout) : $layout;
     }
 

@@ -33,6 +33,8 @@ class SiteController extends BaseController
     public function loginPageAction()
     {
         $this->bind('title', '登录');
+        $this->clearLayouts();
+        $this->setLayout('_layout/website.php');
         return $this->render('site/login.php');
     }
 
