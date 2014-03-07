@@ -29,6 +29,7 @@ class BaseController extends CController
         $this->bind('title', '我的小工具们');
         $cloudApps = CloudApp::getAllGroupByCategory();
         $this->bind('cloudApps', $cloudApps);
-        $this->bind('currentAppId', CloudApp::getAll()[0]->app_id);
+        $apps = CloudApp::getAll();
+        $this->bind('currentAppId', $apps[0]->app_id);
     }
 } 
