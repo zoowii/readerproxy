@@ -51,6 +51,13 @@ $mux->get('/sites/xiami/info/:id', array(
 ), array(
     'require' => array('id' => '\d+')
 ));
+$mux->post('/sites/cross_proxy', array(
+    'RP\controllers\SiteController', 'crossProxyAction'
+));
+$mux->get('/cloud/appstore', array(
+    'RP\controllers\CloudController', 'appStoreAction'
+));
+$mux->get('/music/player', array('RP\controllers\MusicController', 'playerAction'));
 $mux->get('/', array('\RP\controllers\SiteController', 'indexAction'));
 $mux->get('/login', array('RP\controllers\SiteController', 'loginPageAction'));
 $mux->post('/login', array('RP\controllers\SiteController', 'loginAction'));

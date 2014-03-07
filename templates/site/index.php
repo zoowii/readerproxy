@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="<?= $static_url('css/index.css') ?>"/>
 <script src="<?= $static_url('js/apps/tool_novel/novel_search.js') ?>"></script>
 <script src="<?= $static_url('js/apps/tool_music/music_search.js') ?>"></script>
 <div class="row placeholders">

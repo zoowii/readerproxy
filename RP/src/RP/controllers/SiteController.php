@@ -13,6 +13,7 @@ use RP\core\CCache;
 use RP\models\Role;
 use RP\models\User;
 use RP\util\Common;
+use RP\util\HttpClient;
 use RP\util\UserCommon;
 
 class SiteController extends BaseController
@@ -60,8 +61,6 @@ class SiteController extends BaseController
         $password = trim($this->POST('password'));
         $this->createRootUserIfEmpty();
         $user = User::findByUsernameAndPassword($username, $password);
-        var_dump($user);
-//        exit;
         if ($user !== null && $user->isActive()) {
             $this->login($user);
             return $this->redirect('/');
@@ -86,6 +85,22 @@ class SiteController extends BaseController
         $this->bind('user', $currentUser);
         $this->bind('bindings', $bindings);
         return $this->render('site/profile.php');
+    }
+
+    /**
+     * 跨域代理，因为浏览器有不允许跨域的限制，所以从服务器中转一下
+     */
+    public function crossProxyAction()
+    {
+        $url = $this->POST('url');
+        $method = $this->POST('method');
+        if (isset($_POST['params'])) {
+            $params = $this->POST('params');
+        } else {
+            $params = array();
+        }
+        $res = HttpClient::fetch_page('proxy', $url, $method, $params);
+        return $res;
     }
 
 } 

@@ -11,5 +11,8 @@ namespace RP\controllers;
 
 class CloudController extends BaseController
 {
-
+    public function appStoreAction()
+    {
+        return 'TODO';
+    }
 } 

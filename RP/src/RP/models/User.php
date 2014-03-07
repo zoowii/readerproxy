@@ -13,6 +13,19 @@ use RP\util\UserCommon;
 /**
  * Class User
  * @package RP\models
+ * @property string id
+ * @property int version
+ * @property string created_time
+ * @property string username
+ * @property string password
+ * @property string salt
+ * @property string role_id
+ * @property string last_update_time
+ * @property string alias_name
+ * @property string last_login_time
+ * @property int last_login_ip
+ * @property string avatar_id
+ * @property int is_deleted
  */
 class User extends CModel
 {

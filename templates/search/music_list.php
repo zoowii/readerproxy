@@ -1,3 +1,4 @@
+<script src="<?= $static_url('js/apps/tool_music/music_common.js') ?>"></script>
 <script src="<?= $static_url('js/apps/tool_music/music_search.js') ?>"></script>
 <div>
     <div class="search-item">
@@ -23,21 +24,22 @@
             foreach ($result['data'] as $item) {
                 ?>
                 <tr>
-                    <td>
+                    <td data-name="<?= $item['name'] ?>">
                         <?= $item['name'] ?>
                     </td>
-                    <td>
+                    <td data-artist="<?= $item['artist'] ?>">
                         <?= $item['artist'] ?>
                     </td>
-                    <td><?= $item['album'] ?></td>
-                    <td><?= $item['source'] ?></td>
-                    <td>
+                    <td data-album="<?= $item['album'] ?>"><?= $item['album'] ?></td>
+                    <td data-source="<?= $item['source'] ?>"><?= $item['source'] ?></td>
+                    <td data-url="<?= $item['url'] ?>">
                         <a href="<?= $item['url'] ?>" download="<?= $item['name'] ?>.mp3">下载</a>
                     </td>
                     <td>
                         <a href="<?= $item['listen_url'] ?>" target="_blank">试听</a>
+                        <button class="btn btn-sm add-to-play-list-btn">加入播放列表</button>
                     </td>
-                    <td>
+                    <td data-lyric-url="/index.php/sites/xiami/lyric/<?= $item['id'] ?>">
                         <a href="/index.php/sites/xiami/lyric/<?= $item['id'] ?>"
                            download="<?= $item['name'] ?>.lrc">下载歌词</a>
                     </td>

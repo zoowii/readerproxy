@@ -12,4 +12,9 @@ namespace RP\controllers;
 class MusicController extends BaseController
 {
 
+    public function playerAction()
+    {
+        return $this->render('tools/music_player.php');
+    }
+
 } 
