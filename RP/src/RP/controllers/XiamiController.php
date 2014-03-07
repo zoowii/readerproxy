@@ -8,11 +8,10 @@
 
 namespace RP\controllers;
 
-use RP\core\CController;
 use RP\SiteCrawl\XiamiCrawler;
 
 
-class XiamiController extends CController
+class XiamiController extends BaseController
 {
     /**
      * @var \RP\SiteCrawl\XiamiCrawler
@@ -22,14 +21,25 @@ class XiamiController extends CController
     public function __construct()
     {
         parent::__construct();
-        $this->setLayout('_layout/website.php');
         $this->crawler = new XiamiCrawler();
+        $this->bind('title', '我的小工具们 -- 音乐');
+        $this->bind('currentAppId', 'tool_music');
     }
 
-    public function searchAction($name)
+    public function searchAction($name = null)
     {
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-        $result = $this->crawler->search($name, $page);
+        if (!empty($name)) {
+            $result = $this->crawler->search($name, $page);
+        } else {
+            $result = array(
+                'data' => array(),
+                'paginator' => array(
+                    'current' => 0,
+                    'total' => 0
+                )
+            );
+        }
         $this->bind('result', $result);
         return $this->render('search/music_list.php');
     }

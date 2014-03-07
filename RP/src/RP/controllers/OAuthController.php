@@ -8,8 +8,6 @@
 
 namespace RP\controllers;
 
-use RP\core\CCache;
-use RP\core\CController;
 use RP\models\AccountBinding;
 use RP\models\Role;
 use RP\models\User;
@@ -18,7 +16,7 @@ use RP\util\OAuthUtil;
 use RP\util\QQAuthUtil;
 use RP\util\UserCommon;
 
-class OAuthController extends CController
+class OAuthController extends BaseController
 {
     public function __construct()
     {

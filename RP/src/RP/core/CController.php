@@ -60,7 +60,17 @@ class CController
 
     protected function setLayout($layout)
     {
-        return $this->template->setLayout($layout);
+        $this->template->setLayout($layout);
+    }
+
+    protected function addLayout($layout)
+    {
+        $this->template->addLayout($layout);
+    }
+
+    protected function block($layout)
+    {
+        $this->addLayout($layout);
     }
 
     protected function render($tpl, $layout = false)
@@ -81,7 +91,7 @@ class CController
 
     protected function bind($name, $value)
     {
-        return $this->template->bind($name, $value);
+        $this->template->bind($name, $value);
     }
 
     protected function args($name = null)

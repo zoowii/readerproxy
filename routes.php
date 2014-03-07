@@ -27,10 +27,16 @@ $mux->get('/sites/qishu/search/:name', array(
 ), array(
     'require' => array('name' => '[\w\W]+')
 ));
+$mux->get('/sites/qishu', array(
+    '\RP\controllers\QishuController', 'searchAction'
+));
 $mux->get('/sites/xiami/search/:name', array(
     '\RP\controllers\XiamiController', 'searchAction'
 ), array(
     'require' => array('name' => '[\w\W]+')
+));
+$mux->get('/sites/xiami', array(
+    '\RP\controllers\XiamiController', 'searchAction'
 ));
 $mux->get('/sites/qishu/download', array(
     '\RP\controllers\QishuController', 'download'

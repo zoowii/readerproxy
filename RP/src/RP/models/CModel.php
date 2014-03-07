@@ -12,6 +12,12 @@ namespace RP\models;
 use RP\util\Common;
 use RP\zorm\Model;
 
+/**
+ * Class CModel
+ * @package RP\models
+ * @property string id
+ * @property int version
+ */
 class CModel extends Model
 {
     public function __construct()

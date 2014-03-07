@@ -10,19 +10,13 @@ namespace RP\controllers;
 
 
 use RP\core\CCache;
-use RP\core\CController;
 use RP\models\Role;
 use RP\models\User;
 use RP\util\Common;
 use RP\util\UserCommon;
 
-class SiteController extends CController
+class SiteController extends BaseController
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setLayout('_layout/website.php');
-    }
 
     public function indexAction()
     {

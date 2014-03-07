@@ -8,7 +8,7 @@
 
 namespace RP\controllers;
 
-class DemoController extends \RP\core\CController
+class DemoController extends BaseController
 {
     public function helloAction()
     {

@@ -5,6 +5,11 @@ namespace RP\core;
 class Template
 {
     public $layout = null;
+    /**
+     *  render from the last to the first, the result of the after one will fill to the $content of the previous one
+     * @var array
+     */
+    public $layouts = array();
     public $binding = array();
     public $templateDir;
 
@@ -23,9 +28,14 @@ class Template
         $this->templateDir = $dir;
     }
 
+    /**
+     * set the root layout
+     * @param $layout
+     */
     public function setLayout($layout)
     {
         $this->layout = $layout;
+        $this->layouts[0] = is_string($layout) ? array('content' => $layout) : $layout;
     }
 
     public function bind($name, $value)
@@ -43,11 +53,19 @@ class Template
         include $path;
     }
 
+    public function addLayout($layout)
+    {
+        if (is_string($layout)) {
+            $layout = array('content' => $layout);
+        }
+        $this->layouts[] = $layout;
+    }
+
 
     public function render($tpl, $layout = false)
     {
         if ($layout !== false) {
-            $this->layout = $layout;
+            $this->setLayout($layout);
         }
         foreach ($this->binding as $name => $value) {
             $$name = $value;
@@ -57,13 +75,18 @@ class Template
         include $path;
         $_output = ob_get_contents();
         ob_end_clean();
-        if ($this->layout !== null) {
-            $layoutPath = $this->getTemplateFullPath($this->layout);
-            $content = $_output;
-            ob_start();
-            include $layoutPath;
-            $_output = ob_get_contents();
-            ob_end_clean();
+        $content = $_output;
+        // TODO: use reverse iterator
+        for ($i = count($this->layouts) - 1; $i >= 0; --$i) {
+            $layout = $this->layouts[$i];
+            foreach ($layout as $key => $block) {
+                $blockPath = $this->getTemplateFullPath($block);
+                ob_start();
+                include $blockPath;
+                $_output = ob_get_contents();
+                ob_end_clean();
+                $$key = $_output;
+            }
         }
         return $_output;
     }

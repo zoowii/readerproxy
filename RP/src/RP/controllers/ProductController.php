@@ -9,7 +9,7 @@
 namespace RP\controllers;
 
 
-class ProductController extends \RP\core\CController
+class ProductController extends BaseController
 {
     public function __construct()
     {
