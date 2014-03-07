@@ -16,11 +16,16 @@ abstract class Model
     // 如果对象有默认值，可以给具体的model添加有默认值得属性，比如public $has_read=false
     public static $tbl_prefix = '';
     protected static $tableName;
+    protected static $fullTableName = null;
 
     public static function getFullTableName()
     {
         $cls = get_called_class();
-        return $cls::$tbl_prefix . $cls::$tableName;
+        if (!is_null($cls::$fullTableName)) {
+            return $cls::$fullTableName;
+        } else {
+            return $cls::$tbl_prefix . $cls::$tableName;
+        }
     }
 
     /**
@@ -138,7 +143,7 @@ abstract class Model
     public function save()
     {
         if ($this->isNewRecord) {
-            $sql = "insert into " . $this::$tbl_prefix . $this::$tableName;
+            $sql = "insert into " . $this::getFullTableName();
             $bindParams = array();
             $column_string = ' (';
             $value_string = '(';
@@ -176,7 +181,7 @@ abstract class Model
         if ($this->isNewRecord) {
             return false; // only record in db can be update
         }
-        $sql = "update " . TABLE_PREFIX . $this::$tableName . ' t';
+        $sql = "update " . $this::getFullTableName() . ' t';
         $bindParams = array();
         $set_string = ' set';
         $class = get_class($this);
@@ -201,16 +206,10 @@ abstract class Model
     {
         $class = get_class($this);
         $pk = $class::$pkColumn;
-        $sql = "delete from " . TABLE_PREFIX . $class::$tableName . " t where `$pk`=?";
+        $sql = "delete from " . $this::getFullTableName() . " t where `$pk`=?";
         $bindParams = array($this->$pk);
         $stmt = self::getDb()->prepare($sql);
         return $stmt->execute($bindParams);
-    }
-
-    protected static function getRealTableName()
-    {
-        $cls = get_called_class();
-        return $cls::$tbl_prefix . $cls::$tableName;
     }
 
     /**
@@ -237,7 +236,7 @@ abstract class Model
                 $i++;
             }
         }
-        $from_string = ' from ' . $model_name::getRealTableName() . ' t';
+        $from_string = ' from ' . $model_name::getFullTableName() . ' t';
         if (!is_array($with) || count($with) <= 0) {
             $select_string = ' *';
         } else {
@@ -262,7 +261,7 @@ abstract class Model
                     $where_string .= ' where';
                 }
                 $where_string .= ' t.`' . $rel['column'] . "`=t$i.`" . $rel['key'] . "`";
-                $from_string .= ',' . $rel['model']::getRealTableName() . " t$i";
+                $from_string .= ',' . $rel['model']::getFullTableName() . " t$i";
                 $j = 0;
                 foreach ($rel['model']::$columnTypes as $col => $type) {
                     if ($j > 0) {
@@ -380,7 +379,7 @@ abstract class Model
         $model_name = get_called_class();
         $conn = self::getDb();
         $where_string = (is_null($condition) || $condition === '') ? '' : " where $condition";
-        $from_string = ' from ' . $model_name::getRealTableName() . ' t';
+        $from_string = ' from ' . $model_name::getFullTableName() . ' t';
         if (!is_array($with) || count($with) <= 0) {
             $select_string = ' *';
         } else {
@@ -405,7 +404,7 @@ abstract class Model
                 $select_string .= ',';
                 $rel = $model_name::$relations[$name];
                 $where_string .= ' t.`' . $rel['column'] . "`=t$i.`" . $rel['key'] . "`";
-                $from_string .= ',' . $rel['model']::getRealTableName() . " t$i";
+                $from_string .= ',' . $rel['model']::getFullTableName() . " t$i";
                 $j = 0;
                 foreach ($rel['model']::$columnTypes as $col => $type) {
                     if ($j > 0) {

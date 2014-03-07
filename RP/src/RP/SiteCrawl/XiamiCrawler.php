@@ -66,7 +66,7 @@ class XiamiCrawler
         $res = $cache->get($cache_key);
         if ($res == null) {
             $res = HttpClient::fetch_page('xiami', $url);
-            $cache->set($cache_key, $res, -1);
+            $cache->set($cache_key, $res, 3600);
         }
         $dom = HtmlDomParser::str_get_html($res);
         $trackEl = $dom->find('track', 0);

@@ -19,6 +19,7 @@ class QishuController extends BaseController
         $this->crawler = new \RP\SiteCrawl\QishuCrawler();
         $this->bind('title', '我的小工具们 -- 小说');
         $this->bind('currentAppId', 'tool_novel');
+        $this->bind('search_keyword', '红楼梦');
     }
 
     public function searchAction($name = null)
@@ -36,6 +37,9 @@ class QishuController extends BaseController
             );
         }
         $this->bind('result', $result);
+        if (!empty($name)) {
+            $this->bind('search_keyword', $name);
+        }
         return $this->render('search/novel_list.php');
     }
 

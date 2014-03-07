@@ -1,7 +1,7 @@
 <script src="<?= $static_url('js/apps/tool_music/music_search.js') ?>"></script>
 <div>
     <div class="search-item">
-        <input class="search-field" type="search" placeholder="Search" value="董贞"/>
+        <input class="search-field" type="search" placeholder="Search" value="<?= $search_keyword ?>"/>
         <button class="btn btn-sm btn-info search-xiami-btn">搜索</button>
     </div>
 </div>

@@ -41,8 +41,14 @@ class CloudApp extends CModel
     {
         $this->description = '';
         $this->category = null;
+        $this->target = '_current';
     }
 
+    /**
+     * TODO
+     * 暂时硬编码进去，没有放入数据库，并且没有应用商店，安装的概念
+     * @return array
+     */
     public static function getAll()
     {
         $cloudApps = array();
@@ -53,8 +59,14 @@ class CloudApp extends CModel
         $overviewApp->name = '概览';
         $overviewApp->category = 'system';
         $overviewApp->url = '/';
-        $overviewApp->target = '_current';
         $cloudApps[] = $overviewApp;
+
+        $appStoreApp = new CloudApp();
+        $appStoreApp->app_id = 'system_appstore';
+        $appStoreApp->name = '应用商店';
+        $appStoreApp->category = 'system';
+        $appStoreApp->url = '/index.php/cloud/appstore';
+        $cloudApps[] = $appStoreApp;
 
         $novelApp = new CloudApp();
         $novelApp->app_id = 'tool_novel';
@@ -62,7 +74,6 @@ class CloudApp extends CModel
         $novelApp->description = '搜索下载和在线阅读小说';
         $novelApp->category = 'life';
         $novelApp->url = '/index.php/sites/qishu';
-        $novelApp->target = '_current';
         $cloudApps[] = $novelApp;
 
         $musicApp = new CloudApp();
@@ -71,8 +82,15 @@ class CloudApp extends CModel
         $musicApp->description = '搜索下载和在线听音乐';
         $musicApp->url = '/index.php/sites/xiami';
         $musicApp->category = 'life';
-        $musicApp->target = '_current';
         $cloudApps[] = $musicApp;
+
+        $musicPlayerApp = new CloudApp();
+        $musicPlayerApp->app_id = 'tool_music_player';
+        $musicPlayerApp->name = '音乐播放器';
+        $musicPlayerApp->description = '一个简单的在线音乐播放器';
+        $musicPlayerApp->url = '/index.php/music/player';
+        $musicPlayerApp->category = 'life';
+        $cloudApps[] = $musicPlayerApp;
 
         $stockApp = new CloudApp();
         $stockApp->app_id = 'tool_stockkit';

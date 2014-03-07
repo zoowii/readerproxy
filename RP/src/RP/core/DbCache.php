@@ -21,33 +21,21 @@ class DbCache extends CCache
     public function get($name)
     {
         $this->create_table_if_not_exist();
-        $db = $this->db;
         $now = time(); // date('Y-m-d H:i:s');
-        $db_res = $db->query("select * from s_cache where name='$name' and (expire_time>$now or expire_time<=0) limit 1");
-        $res = array();
-        if ($row = $db_res->fetch(\PDO::FETCH_ASSOC)) {
-            $res[] = $row;
-        }
-//        $res = $db->get('s_cache',
-//            array('value'),
-//            array('AND' => array(
-//                "name='$name'",
-//                "(expire_time>$now or expire_time<=0)")));
-        if (count($res) > 0) {
-            return $res[0]['value'];
-        } else {
-            return null;
-        }
+        $cache = DbCacheModel::findOne("name='$name' and (expire_time>$now or expire_time<=0)");
+
+        return is_null($cache) ? null : $cache->value;
     }
 
     public function remove($name)
     {
         $this->create_table_if_not_exist();
-        $db = $this->db;
-        $db->delete('s_cache', array('AND' => array(
-            "name='$name'"
-        )));
-        $db->exec("delete from s_cache where name='$name'");
+        $caches = DbCacheModel::findAllByAttributes(array(
+            'name' => $name
+        ));
+        foreach ($caches as $cache) {
+            $cache->delete();
+        }
     }
 
     public function set($name, $value, $expires)
@@ -58,13 +46,12 @@ class DbCache extends CCache
         } else {
             $expire_time = -1;
         }
-        $db = $this->db;
         $this->remove($name);
-        $db->insert('s_cache', array(
-            'name' => $name,
-            'value' => strval($value),
-            'expire_time' => $expire_time
-        ));
+        $cache = new DbCacheModel();
+        $cache->name = $name;
+        $cache->value = $value;
+        $cache->expire_time = $expire_time;
+        $cache->save();
     }
 
     public function create_table_if_not_exist()

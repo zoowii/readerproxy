@@ -24,6 +24,7 @@ class XiamiController extends BaseController
         $this->crawler = new XiamiCrawler();
         $this->bind('title', '我的小工具们 -- 音乐');
         $this->bind('currentAppId', 'tool_music');
+        $this->bind('search_keyword', '董贞');
     }
 
     public function searchAction($name = null)
@@ -41,6 +42,9 @@ class XiamiController extends BaseController
             );
         }
         $this->bind('result', $result);
+        if (!empty($name)) {
+            $this->bind('search_keyword', $name);
+        }
         return $this->render('search/music_list.php');
     }
 
