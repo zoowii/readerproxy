@@ -24,4 +24,13 @@ $(function () {
             lyricUrl: lyricUrl
         });
     });
+    $(".download-all-btn").click(function () {
+        var $storeBtns = $(".store-btn");
+        _.each($storeBtns, function (storeBtn) {
+            var url = $(storeBtn).attr('href');
+            $.get(url, {}, function () {
+            });
+        });
+        alert('已经添加到存储队列');
+    });
 });

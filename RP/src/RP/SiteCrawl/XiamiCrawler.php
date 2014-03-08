@@ -139,16 +139,16 @@ class XiamiCrawler
                     'listen_url' => "http://www.xiami.com/song/play?ids=/song/playlist/id/$songId/object_name/default/object_id/0",
                     'meta_info' => $trackMetaInfo
                 );
-                $uid = 'xiami_' . $track['id'];
+                $guid = 'xiami_' . $track['id'];
                 $store_filename = '/music/xiami/' . $track['id'] . '_' . $track['name'];
                 $data_key = json_encode(array('bucket' => $bucket, 'object' => $store_filename . '.mp3'));
                 $lyric_key = json_encode(array('bucket' => $bucket, 'object' => $store_filename . '.lrc'));
                 $pic_key = json_encode(array('bucket' => $bucket, 'object' => $store_filename . '.jpg'));
-                $song = Song::createOrUpdate($uid, $track['source'], $track['name'], $track['artist'], $track['album'],
+                Song::createOrUpdate($guid, $track['source'], $track['name'], $track['artist'], $track['album'],
                     $track['url'], null, $data_key,
                     $trackMetaInfo['lyric_url'], null, $lyric_key,
                     $trackMetaInfo['picture_url'], null, $pic_key);
-                $track['guid'] = $song->id;
+                $track['guid'] = $guid;
                 $tracks[] = $track;
             } catch (\Exception $e) {
 
