@@ -32,4 +32,39 @@ class BaseController extends CController
         $apps = CloudApp::getAll();
         $this->bind('currentAppId', $apps[0]->app_id);
     }
+
+    public function ajaxResponse($data, $type = 'json')
+    {
+        switch ($type) {
+            case 'json':
+            {
+                return json_encode($data);
+            }
+            case 'xml':
+            {
+                return strval($data); // TODO
+            }
+            default:
+                {
+                return strval($data);
+                }
+        }
+    }
+
+    public function ajaxSuccess($data, $type = 'json')
+    {
+        return $this->ajaxResponse(array(
+            'data' => $data,
+            'success' => true
+        ), $type);
+    }
+
+    public function ajaxFail($data, $type = 'json')
+    {
+        return $this->ajaxResponse(array(
+            'data' => $data,
+            'success' => false
+        ), $type);
+    }
+
 } 

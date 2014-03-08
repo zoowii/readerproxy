@@ -18,6 +18,7 @@
             <th>在线试听</th>
             <th>歌词下载</th>
             <th>收藏</th>
+            <th>存储</th>
             </thead>
             <tbody>
             <?php
@@ -36,7 +37,6 @@
                         <a href="<?= $item['url'] ?>" download="<?= $item['name'] ?>.mp3">下载</a>
                     </td>
                     <td>
-                        <a href="<?= $item['listen_url'] ?>" target="_blank">试听</a>
                         <button class="btn btn-sm add-to-play-list-btn">加入播放列表</button>
                     </td>
                     <td data-lyric-url="/index.php/sites/xiami/lyric/<?= $item['id'] ?>">
@@ -45,6 +45,9 @@
                     </td>
                     <td>
                         TODO
+                    </td>
+                    <td>
+                        <a href="/index.php/music/store/async?guid=<?= $item['guid'] ?>">存储</a>
                     </td>
                 </tr>
             <?php

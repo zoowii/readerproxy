@@ -9,6 +9,7 @@ $db_config = array(
     'dbname' => 'readerproxy',
     'tbl_prefix' => 'rp_'
 );
+$tmp_fs = '/dev/shm'; // TODO: if it's SAE, use TmpFS service
 if (defined('SAE_MYSQL_DB')) {
     // if is run on SAE
     $db_config['type'] = 'mysql';
@@ -18,15 +19,22 @@ if (defined('SAE_MYSQL_DB')) {
     $db_config['pass'] = SAE_MYSQL_PASS;
     $db_config['dbname'] = SAE_MYSQL_DB;
     $db_config['charset'] = 'utf8';
+    $tmp_fs = SAE_TMP_PATH;
 }
 date_default_timezone_set('Asia/Shanghai');
 return array(
     'BASE_URL' => '',
+    'tmp_fs' => $tmp_fs,
     'db' => array(
         'default' => $db_config
     ),
     'qq' => array(
         'app_id' => 换成真实的QQ互联的app_id,
         'app_key' => '换成真实的QQ互联的app_key'
-    )
+    ),
+    'baidu' => array(
+        'app_key' => '换成真实的百度云平台应用的app_key',
+        'secret_key' => '换成真实的百度云平台应用的secret_key',
+        'bucket'=>'换成真实的百度云存储的bucket名称',
+    ),
 );

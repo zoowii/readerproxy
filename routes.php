@@ -58,6 +58,11 @@ $mux->get('/cloud/appstore', array(
     'RP\controllers\CloudController', 'appStoreAction'
 ));
 $mux->get('/music/player', array('RP\controllers\MusicController', 'playerAction'));
+$mux->get('/music/store', array('RP\controllers\MusicController', 'storeAction'));
+$mux->get('/music/store/async', array('RP\controllers\MusicController', 'asyncStoreAction'));
+
+$mux->get('/test/store', array('RP\controllers\MusicController', 'testUploadFileToBcs'));
+
 $mux->get('/', array('\RP\controllers\SiteController', 'indexAction'));
 $mux->get('/login', array('RP\controllers\SiteController', 'loginPageAction'));
 $mux->post('/login', array('RP\controllers\SiteController', 'loginAction'));

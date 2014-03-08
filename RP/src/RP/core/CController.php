@@ -135,7 +135,14 @@ class CController
     protected function getSession($name = null)
     {
         $this->initSession();
-        return $name ? $_SESSION[$name] : $_SESSION;
+        if (empty($name)) {
+            return $_SESSION;
+        }
+        if (isset($_SESSION[$name])) {
+            return $_SESSION[$name];
+        } else {
+            return null;
+        }
     }
 
     protected function setSession($name, $value)
