@@ -4,6 +4,7 @@
     <div class="search-item">
         <input class="search-field" type="search" placeholder="Search" value="<?= $search_keyword ?>"/>
         <button class="btn btn-sm btn-info search-xiami-btn">搜索</button>
+        <button class="btn btn-sm btn-primary download-all-btn">全部下载</button>
     </div>
 </div>
 <div>
@@ -18,6 +19,7 @@
             <th>在线试听</th>
             <th>歌词下载</th>
             <th>收藏</th>
+            <th>存储</th>
             </thead>
             <tbody>
             <?php
@@ -44,6 +46,9 @@
                     </td>
                     <td>
                         TODO
+                    </td>
+                    <td>
+                        <a href="/index.php/music/store/async?guid=<?= $item['guid'] ?>" class="btn btn-sm btn-success store-btn">存储</a>
                     </td>
                 </tr>
             <?php

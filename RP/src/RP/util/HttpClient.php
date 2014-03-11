@@ -21,7 +21,7 @@ class HttpClient
      * @param int $timeout
      * @return mixed
      */
-    public static function fetch_page($site, $url, $method = 'GET', $params = false, $ssl = false, $headers = false, $timeout = 5)
+    public static function fetch_page($site, $url, $method = 'GET', $params = false, $ssl = false, $headers = false, $timeout = 10)
     {
         $ch = curl_init();
         $cookieFile = $site . '_cookiejar.txt';
@@ -47,4 +47,41 @@ class HttpClient
         }
         return $result;
     }
+
+    /**
+     * 异步加载。如果要执行异步任务，可以先定义个action url，在里面实习同步阻塞的调用。然后用这个方式来异步调用那个页面
+     * @param $site
+     * @param $url
+     * @param string $method
+     * @param bool $params
+     * @param bool $ssl
+     * @param bool $headers
+     * @param int $timeout
+     */
+    public static function asyncLoad($site, $url, $method = 'GET', $params = false, $ssl = false, $headers = false, $timeout = 5)
+    {
+//        foreach ($get_params as $key => &$val) {
+//            if (is_array($val)) $val = implode(',', $val);
+//            $post_params[] = $key . '=' . urlencode($val);
+//        }
+        if ($params) {
+            $post_string = implode('&', $params);
+        } else {
+            $post_string = '';
+        }
+        $parts = parse_url($url);
+        $fp = fsockopen($parts['host'],
+            isset($parts['port']) ? $parts['port'] : 80,
+            $errno, $errstr, 30);
+        $out = "POST " . $parts['path'] . " HTTP/1.1\r\n";
+        $out .= "Host: " . $parts['host'] . "\r\n";
+        $out .= "Content-Type: application/x-www-form-urlencoded\r\n";
+        $out .= "Content-Length: " . strlen($post_string) . "\r\n";
+        $out .= "Connection: Close\r\n\r\n";
+        if (isset($post_string)) $out .= $post_string;
+
+        fwrite($fp, $out);
+        fclose($fp);
+    }
+
 } 

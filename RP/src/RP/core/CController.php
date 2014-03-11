@@ -137,10 +137,13 @@ class CController extends Router
     protected function getSession($name = null)
     {
         $this->initSession();
-        if ($name && isset($_SESSION[$name])) {
+        if (empty($name)) {
+            return $_SESSION;
+        }
+        if (isset($_SESSION[$name])) {
             return $_SESSION[$name];
         } else {
-            return $_SESSION;
+            return null;
         }
     }
 

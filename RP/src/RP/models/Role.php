@@ -8,7 +8,15 @@
 
 namespace RP\models;
 
-
+/**
+ * Class Role
+ * @package RP\models
+ * @property string id
+ * @property int version
+ * @property string created_time
+ * @property string name
+ * @property string description
+ */
 class Role extends CModel
 {
     protected static $tableName = 'role';
