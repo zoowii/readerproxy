@@ -38,6 +38,11 @@ class DbCache extends CCache
         }
     }
 
+    public function clearExpiredData()
+    {
+        // TODO
+    }
+
     public function set($name, $value, $expires)
     {
         $this->create_table_if_not_exist();
