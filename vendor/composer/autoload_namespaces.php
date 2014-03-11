@@ -6,9 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'zorm' => array($baseDir . '/zorm/src'),
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Sunra\\PhpSimple\\HtmlDomParser' => array($vendorDir . '/sunra/php-simple-html-dom-parser/Src'),
     'RP' => array($baseDir . '/RP/src'),
+    'Px' => array($baseDir . '/Px/src'),
     'Pux' => array($vendorDir . '/corneltek/pux/src'),
+    'Monolog' => array($vendorDir . '/monolog/monolog/src'),
 );

@@ -2,3 +2,5 @@
 .idea/
 *~
 config.php
+composer.lock
+sftp-config.json

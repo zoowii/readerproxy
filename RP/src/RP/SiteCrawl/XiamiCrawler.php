@@ -99,7 +99,7 @@ class XiamiCrawler
         $res = $cache->get($cache_key);
         if ($res === null) {
             $res = HttpClient::fetch_page('xiami', $url);
-            $cache->set($cache_key, $res, 3600);
+            $cache->set($cache_key, $res, 100000);
         }
         $dom = HtmlDomParser::str_get_html($res);
         $mainDom = $dom->find('.search_result', 0);

@@ -18,6 +18,15 @@ class XiamiController extends BaseController
      */
     private $crawler;
 
+    protected $baseUrl = '/sites/xiami';
+
+    protected function routes()
+    {
+        $this->get(array('', '/search/:name'), 'searchAction');
+        $this->get('/lyric/:id', 'downloadLyricAction');
+        $this->get('/info/:id', 'trackMetaInfoAction');
+    }
+
     public function __construct()
     {
         parent::__construct();

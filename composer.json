@@ -10,13 +10,15 @@
         }
     ],
     "require": {
+        "monolog/monolog": "1.2.*",
         "corneltek/pux": "~1.3",
         "twig/twig": "1.*",
         "sunra/php-simple-html-dom-parser": "v1.5.0"
     },
     "autoload": {
         "psr-0": {
-            "RP": ["RP/src"]
+            "RP": ["RP/src"],
+            "Px": ["Px/src"]
         }
     }
 }

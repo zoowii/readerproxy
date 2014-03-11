@@ -36,7 +36,6 @@
                         <a href="<?= $item['url'] ?>" download="<?= $item['name'] ?>.mp3">下载</a>
                     </td>
                     <td>
-                        <a href="<?= $item['listen_url'] ?>" target="_blank">试听</a>
                         <button class="btn btn-sm add-to-play-list-btn">加入播放列表</button>
                     </td>
                     <td data-lyric-url="/index.php/sites/xiami/lyric/<?= $item['id'] ?>">

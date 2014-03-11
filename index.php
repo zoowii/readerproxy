@@ -1,11 +1,8 @@
 <?php
-require_once 'vendor/autoload.php'; // use PCRE patterns you need Pux\PatternCompiler class.
+require_once 'vendor/autoload.php';
 define('ROOT_DIR', __DIR__);
 $config = require 'config.php';
-//define('CONFIG', $config);
 $_ENV['_CONFIG'] = $config;
-use Pux\Executor;
-
-$mux = require 'routes.php';
-$route = $mux->dispatch(isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/');
-echo Executor::execute($route);
+$path = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
+$router = require 'routes.php';
+echo $router->dispatch($path);

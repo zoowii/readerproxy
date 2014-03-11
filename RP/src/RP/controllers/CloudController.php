@@ -11,8 +11,16 @@ namespace RP\controllers;
 
 class CloudController extends BaseController
 {
+    protected $baseUrl = '/cloud';
+
+    protected function routes()
+    {
+        $this->get('/appstore', 'appStoreAction');
+    }
+
     public function appStoreAction()
     {
         return 'TODO';
     }
-} 
+
+}

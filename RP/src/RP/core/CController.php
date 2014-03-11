@@ -16,9 +16,10 @@ namespace RP\core;
 //}
 
 use RP\models\User;
+use RP\Px\Router;
 use RP\zorm\Model;
 
-class CController
+class CController extends Router
 {
     /**
      * @var \RP\core\Template
@@ -26,14 +27,10 @@ class CController
     public $template;
     protected $_db = null;
     protected $_payload = null;
-    protected $_session_started = false;
 
     protected function initSession()
     {
-        if ($this->_session_started === false) {
-            session_start();
-            $this->_session_started = true;
-        }
+        HttpSession::startSession();
     }
 
     protected function db()
@@ -46,6 +43,7 @@ class CController
 
     public function __construct()
     {
+        parent::__construct();
         $this->template = new Template();
         $this->bind('controller', $this);
         $this->bind('template', $this->template);
@@ -104,18 +102,22 @@ class CController
         return $name ? $_GET[$name] : $_GET;
     }
 
-    protected function POST($name = null)
+    /**
+     * get data from $_POST
+     */
+    protected function form($name = null)
     {
-        if (!$name) {
-            return $_POST;
-        } else {
+        if ($name && isset($_POST[$name])) {
             return $_POST[$name];
+        } elseif ($name) {
+            return null;
+        } else {
+            return $_POST;
         }
     }
 
     protected function forms()
     {
-        // TODO
         return $_POST;
     }
 

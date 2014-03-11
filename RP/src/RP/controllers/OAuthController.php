@@ -18,6 +18,15 @@ use RP\util\UserCommon;
 
 class OAuthController extends BaseController
 {
+    protected function routes()
+    {
+        $this->get('/auth/qq/login', 'qqLoginAction');
+        $this->get('/auth/callback/qq', 'qqGetAccessTokenAction');
+        $this->post('/oauth/login', 'oauthLoginAction');
+        $this->get('/oauth/bind', 'oauthBindPageAction');
+        $this->get('/oauth/bind', 'oauthBindAction');
+    }
+
     public function __construct()
     {
         parent::__construct();
@@ -36,10 +45,10 @@ class OAuthController extends BaseController
 
     public function oauthLoginAction()
     {
-        $access_token = $this->POST('access_token');
-        $openid = $this->POST('openid');
-        $expires = intval($this->POST('expires_in'));
-        $type = $this->POST('type');
+        $access_token = $this->form('access_token');
+        $openid = $this->form('openid');
+        $expires = intval($this->form('expires_in'));
+        $type = $this->form('type');
         $this->setSession("oauth2_access_token", $access_token);
         $this->setSession("oauth2_openid", $openid);
         $this->setSession("oauth2_source", $type);
@@ -91,8 +100,8 @@ class OAuthController extends BaseController
         $access_token = $this->getSession('oauth2_access_token');
         $userinfo = $this->getSession('oauth2_userinfo');
         $displayName = OAuthUtil::getDisplayName($type, $userinfo);
-        $username = trim($this->POST('username'));
-        $password = trim($this->POST('password'));
+        $username = trim($this->form('username'));
+        $password = trim($this->form('password'));
         if (strlen($username) < 4 || strlen($username) > 20) {
             return '用户名的长度最短4位，最长20位';
         }

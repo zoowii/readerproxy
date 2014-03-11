@@ -9,14 +9,24 @@
 namespace RP\controllers;
 
 
+use RP\SiteCrawl\QishuCrawler;
+
 class QishuController extends BaseController
 {
     private $crawler;
 
+    protected $baseUrl = '/sites/qishu';
+
+    protected function routes()
+    {
+        $this->get(array('', '/search/:name'), 'searchAction');
+        $this->get('/download', 'download');
+    }
+
     public function __construct()
     {
         parent::__construct();
-        $this->crawler = new \RP\SiteCrawl\QishuCrawler();
+        $this->crawler = new QishuCrawler();
         $this->bind('title', '我的小工具们 -- 小说');
         $this->bind('currentAppId', 'tool_novel');
         $this->bind('search_keyword', '红楼梦');

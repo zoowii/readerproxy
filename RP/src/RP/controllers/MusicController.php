@@ -12,6 +12,13 @@ namespace RP\controllers;
 class MusicController extends BaseController
 {
 
+    protected $baseUrl = '/music';
+
+    protected function routes()
+    {
+        $this->get('/player', 'playerAction');
+    }
+
     public function playerAction()
     {
         return $this->render('tools/music_player.php');

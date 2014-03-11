@@ -12,7 +12,7 @@ Author: zoowii
 * 演示地址：[http://tools.zoowii.com](http://tools.zoowii.com)
 * 使用了PHP 5.3+，composer做包管理，使用了Pux做路由，使用了medoo做PDO的封装。使用MySQL数据库，并且可以直接部署到SAE平台（需要先导入deploy目录下的sql文件）
 * 已经支持QQ登录，但目前采用邀请制，只有邀请的拥有才可以使用本站点，并且部署时需要拷贝config.php.bak到config.php，并且修改其中的qq的key-secret，数据库信息等
-
+* 路由功能已经从Pux转到自己实现的一个路由
 
 ## TODO List
 * txt文件存储到本系统中，并提供自动分章节功能
@@ -28,3 +28,4 @@ Author: zoowii
 * 由数据库自动生成model类和或由model类自动生成数据库的工具
 * ORM框架做安全性优化(使用参数化查询)
 * 优化在线音乐播放器(使用canvas或者dom自己画一个，或者网上找个好用的)
+* 路由实现url_for的反转功能

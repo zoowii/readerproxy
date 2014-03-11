@@ -18,6 +18,15 @@ use RP\util\UserCommon;
 
 class SiteController extends BaseController
 {
+    protected function routes()
+    {
+        $this->get('/', 'indexAction');
+        $this->get('/login', 'loginPageAction');
+        $this->post('/login', 'loginAction');
+        $this->get('/logout', 'logoutAction');
+        $this->get('/profile', 'profileAction');
+        $this->post('/sites/cross_proxy', 'crossProxyAction');
+    }
 
     public function indexAction()
     {
@@ -59,8 +68,8 @@ class SiteController extends BaseController
 
     public function loginAction()
     {
-        $username = trim($this->POST('username'));
-        $password = trim($this->POST('password'));
+        $username = trim($this->form('username'));
+        $password = trim($this->form('password'));
         $this->createRootUserIfEmpty();
         $user = User::findByUsernameAndPassword($username, $password);
         if ($user !== null && $user->isActive()) {
@@ -94,10 +103,10 @@ class SiteController extends BaseController
      */
     public function crossProxyAction()
     {
-        $url = $this->POST('url');
-        $method = $this->POST('method');
+        $url = $this->form('url');
+        $method = $this->form('method');
         if (isset($_POST['params'])) {
-            $params = $this->POST('params');
+            $params = $this->form('params');
         } else {
             $params = array();
         }

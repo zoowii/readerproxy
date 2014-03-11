@@ -10,6 +10,13 @@ namespace RP\controllers;
 
 class DemoController extends BaseController
 {
+    protected $baseUrl = '/demo';
+
+    protected function routes()
+    {
+        $this->get('/get', 'helloAction');
+    }
+
     public function helloAction()
     {
         return $this->render('demo/hello.php');
