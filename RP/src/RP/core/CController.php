@@ -52,6 +52,10 @@ class CController extends Router
             $url = $config['BASE_URL'] . '/static/' . $filename;
             return $url;
         });
+        $this->bind('url_for', function () {
+            $params = func_get_args();
+            return $this->applyUrlFor($params[0], $params[1], array_slice($params, 2));
+        });
         Model::$tbl_prefix = 'rp_';
         Model::setDb($this->db()->pdo);
     }
@@ -81,6 +85,11 @@ class CController extends Router
         return $this->template->render($tpl, $layout);
     }
 
+    protected function renderPartial($tpl)
+    {
+        return $this->template->renderPartial($tpl);
+    }
+
     /**
      * TODO: route to callable with url_for
      * @param $url
@@ -90,6 +99,22 @@ class CController extends Router
     {
         header('Location: ' . $url);
         return '';
+    }
+
+    protected function redirectToAction($controllerClassName, $actionName)
+    {
+        $params = array_slice(func_get_args(), 2);
+        $url = $this->applyUrlFor($controllerClassName, $actionName, $params);
+        return $this->redirect($url);
+    }
+
+    /**
+     * 重定向回当前action对应的url
+     */
+    protected function redirectBack() {
+        // TODO
+        var_dump(get_call_stack());
+        return $this->redirectToAction(null, null);
     }
 
     protected function bind($name, $value)
@@ -196,12 +221,80 @@ class CController extends Router
 
     public function setFlash($name, $value)
     {
-        // TODO: flash message支持
+        $this->setSession("flash_message_$name", $value);
     }
 
-    protected function getFlash($name = null)
+    protected function onlyGetFlash($name)
     {
-        // TODO: flash message支持
+        // TODO: flash消息如果存放到session中的话应该注意有效时间，可以考虑放到其他临时存储系统中
+        return $this->getSession("flash_message_$name");
+    }
+
+    protected function getFlash($name)
+    {
+        $msg = $this->onlyGetFlash($name);
+        $this->setSession("flash_message_$name", null);
+        return $msg;
+    }
+
+    protected function _quickFlash($name, $val = null)
+    {
+        if (is_null($val)) {
+            return $this->getFlash($name);
+        } else {
+            $this->setFlash($name, $val);
+            return null;
+        }
+    }
+
+    protected function bindAllFlashes()
+    {
+        $this->bind('successMsg', $this->successFlash());
+        $this->bind('errorMsg', $this->errorFlash());
+        $this->bind('warningMsg', $this->warningFlash());
+        $this->bind('infoMsg', $this->infoFlash());
+        $this->bind('debugMsg', $this->debugFlash());
+        $this->bind('logMsg', $this->logFlash());
+    }
+
+    protected function successFlash($val = null)
+    {
+        return $this->_quickFlash('success', $val);
+    }
+
+    protected function errorFlash($val = null)
+    {
+        return $this->_quickFlash('error', $val);
+    }
+
+    protected function warningFlash($val = null)
+    {
+        return $this->_quickFlash('warning', $val);
+    }
+
+    protected function infoFlash($val = null)
+    {
+        return $this->_quickFlash('info', $val);
+    }
+
+    protected function debugFlash($val = null)
+    {
+        return $this->_quickFlash('debug', $val);
+    }
+
+    protected function logFlash($val = null)
+    {
+        return $this->_quickFlash('log', $val);
+    }
+
+    protected function clearFlash()
+    {
+        $this->setFlash('success', null);
+        $this->setFlash('error', null);
+        $this->setFlash('warning', null);
+        $this->setFlash('info', null);
+        $this->setFlash('debug', null);
+        $this->setFlash('log', null);
     }
 
     protected function ajax($data)

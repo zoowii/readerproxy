@@ -13,17 +13,17 @@
         <div class="alert alert-danger"><?= $errorMsg ?></div>
     <? } ?>
 </div>
-<form class="form-signin" role="form" method="POST" action="<?= $url_for(null, 'loginAction') ?>">
-    <h2 class="form-signin-heading">请登录</h2>
+<form class="form-signin" role="form" method="POST" action="<?= $url_for(null, 'registerAction') ?>">
+    <h2 class="form-signin-heading">注册帐号</h2>
     <input type="username" name="username" class="form-control" placeholder="用户名" required autofocus>
     <input type="password" name="password" class="form-control" placeholder="密码" required>
     <label class="checkbox">
-        <input type="checkbox" value="remember-me"> 记住我
+        <a href="<?= $url_for(null, 'loginPageAction') ?>">已有帐号？登录</a>
+        <span>或者</span>
         <a href="/index.php/auth/qq/login">
             <img src="<?= $static_url('qq/Connect_logo_1.png') ?>" alt="QQ帐号登录"/>
             登录
         </a>
     </label>
-    <input class="btn btn-lg btn-primary btn-block" type="submit" value="登录"/>
-    <a href="<?= $url_for(null, 'registerPageAction') ?>">新用户？注册</a>
+    <input class="btn btn-lg btn-primary btn-block" type="submit" value="注册"/>
 </form>

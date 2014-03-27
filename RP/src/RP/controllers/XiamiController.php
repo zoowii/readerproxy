@@ -22,7 +22,7 @@ class XiamiController extends BaseController
 
     protected function routes()
     {
-        $this->get(array('', '/search/:name'), 'searchAction');
+        $this->get(array('/search/:name', ''), 'searchAction');
         $this->get('/lyric/:id', 'downloadLyricAction');
         $this->get('/info/:id', 'trackMetaInfoAction');
     }

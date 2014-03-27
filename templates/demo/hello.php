@@ -6,8 +6,5 @@
 </head>
 <body>
 Hello, World
-<?php
-var_dump($controller);
-?>
 </body>
 </html>

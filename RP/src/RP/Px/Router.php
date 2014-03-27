@@ -9,17 +9,33 @@
 namespace RP\Px;
 
 
+use RP\util\StringUtil;
+
 class Router
 {
     protected $baseUrl = '';
+    /**
+     * @var Router
+     */
     protected $parent = null;
     protected $urlMappings = array(
         'GET' => array(),
         'POST' => array(),
         'PUT' => array(),
         'DELETE' => array(),
+        'HEAD' => array(),
+        'OPTION' => array(),
     );
     protected $subRouters = array();
+
+    protected function  getPathBase()
+    {
+        if (defined('PATH_BASE')) {
+            return PATH_BASE;
+        } else {
+            return '/index.php';
+        }
+    }
 
     public function __construct()
     {
@@ -33,6 +49,13 @@ class Router
         }
         foreach ($controllers as $controller) {
             $this->subRouters[] = $controller;
+        }
+    }
+
+    protected function any($urlPattern, $actionName)
+    {
+        foreach (array_keys($this->urlMappings) as $method) {
+            $this->addRoute($method, $urlPattern, $actionName);
         }
     }
 
@@ -165,9 +188,77 @@ class Router
         return $path;
     }
 
-    public function urlFor($params = array())
+    public function getRootRouter()
     {
-        // TODO
+        if (is_null($this->parent)) {
+            return $this;
+        } else {
+            return $this->parent->getRootRouter();
+        }
+    }
+
+    /**
+     * 按名称在子router中查找
+     * 一般从root router开始查找
+     * 因为Router是基类，不做查找，所以实际就是在所有subRouters中查找名称对应的
+     * @param $name
+     * @return string
+     * @throws \Exception
+     */
+    public function findRouterByClassName($name)
+    {
+        foreach ($this->subRouters as $subRouter) {
+            if ($subRouter === $name) {
+                return $subRouter;
+            }
+            // 获取全namespace的controller/router class的short name，也就是最后一个\后面的内容，因为查找时很可能用非完全名称查找
+            $clsName = StringUtil::getStringAfterLastPositionOf($subRouter, '\\');
+            if ($clsName === $name) {
+                return $subRouter;
+            }
+        }
+        throw new \Exception("Can't find router $name");
+    }
+
+    /**
+     * 执行路由反转，根据action和参数反向得到url
+     * 前两个参数是controllerClassName（如果是当前router类，可以设为null）和actionName，剩下的参数作为反转url的参数
+     */
+    public function applyUrlFor($controllerClassName, $actionName, $params = array())
+    {
+        if (!is_null($controllerClassName)) {
+            $routerCls = $this->getRootRouter()->findRouterByClassName($controllerClassName);
+            // TODO: 记录并判断子路由是否已经创建过实例
+            $router = new $routerCls();
+            $router->parent = $this->getRootRouter(); // 现在路由只有两层
+            $router->routes();
+        } else {
+            $router = $this;
+        }
+        $pattern = null;
+        foreach (array_keys($router->urlMappings) as $method) {
+            foreach ($router->urlMappings[$method] as $mapping) {
+                if ($mapping['action'] === $actionName) {
+                    $pattern = $mapping['pattern'];
+                    // 如果有多个规则映射到同一个action的话，取第一个，所以第一个路由pattern尽量比后面的完整，隐去默认参数的路由pattern尽量放后面
+                    break;
+                }
+            }
+            if (!is_null($pattern)) {
+                break;
+            }
+        }
+        if (is_null($pattern)) {
+            throw new \Exception("Can't find url pattern for action $actionName");
+        }
+        $url = $this->getPathBase() . $pattern->unMatch($router->getFullBaseUrl(), $params);
+        return $url;
+    }
+
+    public function urlFor($controllerClassName, $actionName)
+    {
+        $params = array_slice(func_get_args(), 2);
+        return $this->applyUrlFor($controllerClassName, $actionName, $params);
     }
 
 } 

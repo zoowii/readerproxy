@@ -8,6 +8,8 @@
 
 namespace RP\Px;
 
+use RP\util\StringUtil;
+
 class UrlPattern
 {
     /**
@@ -19,12 +21,14 @@ class UrlPattern
      */
     protected $pattern = null;
     protected $variablesCount = 0;
+    protected $sourcePattern = null;
 
     /**
      * @param $pattern
      */
     public function __construct($pattern)
     {
+        $this->sourcePattern = $pattern;
         $this->loadPattern($pattern);
     }
 
@@ -45,9 +49,9 @@ class UrlPattern
      * 如果不匹配，返回false
      * 如果匹配，返回匹配参数的列表（如果没有匹配参数，返回空数组）
      */
-    public function match($baseUrls, $path)
+    public function match($baseUrl, $path)
     {
-        $pattern = $baseUrls . ($this->pattern);
+        $pattern = $baseUrl . ($this->pattern);
         $pattern = preg_replace('/\\//', '\\/', $pattern);
         $pattern = '/^' . $pattern . '$/';
         $matchResult = preg_match_all($pattern, $path, $matches);
@@ -59,6 +63,43 @@ class UrlPattern
                 return $match[0];
             }, $matches);
             return $matches;
+        }
+    }
+
+    /**
+     * 和match函数相反，根据参数反向构造出url
+     */
+    public function unMatch($baseUrl, $params)
+    {
+        $matchResult = preg_match_all('/(:[a-zA-Z_][a-zA-Z_0-9]*)/', $this->sourcePattern, $matches);
+        if ($matchResult < 1) {
+            return $baseUrl . $this->sourcePattern;
+        } else {
+            $pattern = $this->sourcePattern;
+            $matches = array_slice($matches, 1);
+            $matches = array_map(function ($match) {
+                return $match[0];
+            }, $matches);
+            $len = count($matches) < count($params) ? count($matches) : count($params);
+            // FIXME: 当$params的值中有:abc这种形式的内容时可能出现BUG，要换成使用position替换或者正则替换的方式，或者把原字符串拆成多份，替换后再合并
+            for ($i = 0; $i < $len; ++$i) {
+                $match = $matches[$i];
+                $param = $params[$i];
+                $pattern = str_replace($match, $param, $pattern);
+            }
+            // find positions for $matches
+//            $positions = StringUtil::findPositions($this->sourcePattern, $matches);
+//            $offset = 0; // 因为替换了字符串导致的偏差
+//            for($i=0;$i<$len;++$i) {
+//                $pos = $positions[$i];
+//                $param = $params[$i];
+//                $match = $matches[$i];
+//                if($pos>=0) {
+//                    $sLen = count($match);
+//                    str
+//                }
+//            }
+            return $baseUrl . $pattern;
         }
     }
 } 

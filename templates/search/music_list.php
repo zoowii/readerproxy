@@ -40,15 +40,16 @@
                     <td>
                         <button class="btn btn-sm add-to-play-list-btn">加入播放列表</button>
                     </td>
-                    <td data-lyric-url="/index.php/sites/xiami/lyric/<?= $item['id'] ?>">
-                        <a href="/index.php/sites/xiami/lyric/<?= $item['id'] ?>"
+                    <td data-lyric-url="<?= $url_for('XiamiController', 'downloadLyricAction', $item['id']) ?>">
+                        <a href="<?= $url_for('XiamiController', 'downloadLyricAction', $item['id']) ?>"
                            download="<?= $item['name'] ?>.lrc">下载歌词</a>
                     </td>
                     <td>
                         TODO
                     </td>
                     <td>
-                        <a href="/index.php/music/store/async?guid=<?= $item['guid'] ?>" class="btn btn-sm btn-success store-btn">存储</a>
+                        <a href="/index.php/music/store/async?guid=<?= $item['guid'] ?>"
+                           class="btn btn-sm btn-success store-btn">存储</a>
                     </td>
                 </tr>
             <?php

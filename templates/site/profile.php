@@ -1,3 +1,17 @@
+<div class="flash-messages" style="margin: 0 auto; width: 40%;">
+    <? if ($successMsg) { ?>
+        <div class="alert alert-success"><?= $successMsg ?></div>
+    <? } ?>
+    <? if ($infoMsg) { ?>
+        <div class="alert alert-info"><?= $infoMsg ?></div>
+    <? } ?>
+    <? if ($warningMsg) { ?>
+        <div class="alert alert-warning"><?= $warningMsg ?></div>
+    <? } ?>
+    <? if ($errorMsg) { ?>
+        <div class="alert alert-danger"><?= $errorMsg ?></div>
+    <? } ?>
+</div>
 <div class="panel panel-info">
     <div class="panel-heading">
         <h3 class="panel-title">个人信息</h3>
@@ -22,6 +36,15 @@
         <tr>
             <td>Email:</td>
             <td><?= $user->email ?></td>
+        </tr>
+        <tr>
+            <td>密码:</td>
+            <td>
+                <form method="POST" action="<?= $url_for(null, 'changePasswordAction') ?>">
+                    <input type="password" name="password" placeholder="输入新密码"/>
+                    <input value="修改密码" class="btn btn-primary btn-sm" type="submit"/>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

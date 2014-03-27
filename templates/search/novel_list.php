@@ -20,7 +20,7 @@
                         <?= $item['description'] ?>
                     </td>
                     <td>
-                        <a href="/index.php/sites/qishu/download?source=<?= urlencode($item['url']) ?>"
+                        <a href="<?= $url_for('QishuController', 'download') ?>?source=<?= urlencode($item['url']) ?>"
                            download="<?= $item['title'] ?>.rar">下载</a>
                     </td>
                     <td>

@@ -11,6 +11,7 @@ $router->includeActions(array(
     'RP\controllers\OAuthController',
     'RP\controllers\MusicController',
     'RP\controllers\CloudController',
+    'RP\controllers\DemoController',
 ));
 return $router;
 
